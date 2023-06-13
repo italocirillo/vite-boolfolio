@@ -1,5 +1,6 @@
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import ProjectCard from './components/ProjectCard.vue';
 
 export default {
   data() {
@@ -16,14 +17,34 @@ export default {
         this.projects = resp.data.results;
       })
     }
+  },
+  components: {
+    ProjectCard,
   }
 }
 </script>
 
 <template>
-  <h1>Hello world</h1>
+  <div class="container">
+    <h1>PROJECT</h1>
+    <div class="row row-cols-3 g-3">
+      <div class="col" v-for="project in projects" :key="project.id">
+        <ProjectCard :project="project" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <style lang="scss">
 @use "./styles/general.scss";
+
+body {
+  background-color: rgb(0, 93, 93);
+}
+
+h1 {
+  color: white;
+  padding: 2em;
+  text-align: center;
+}
 </style>
