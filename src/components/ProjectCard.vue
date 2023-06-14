@@ -31,6 +31,21 @@ export default {
         <div class="card-body">
             <h5>{{ project.title }}</h5>
             <p>{{ project.description }}</p>
+            <p class="py-1">
+                <span class="border p-1 rounded-pill" v-if="project.type">{{ project.type.title }}</span>
+                <span class="border p-1 rounded-pill" v-else>Nessun tipo</span>
+            </p>
+            <div v-if="project.technologies.length > 0" class="card">
+                <div class=" card-header">
+                    Tecnologie
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li v-for="tecnologia in project.technologies" class="list-group-item">{{ tecnologia.title }}</li>
+                </ul>
+            </div>
+            <div v-else>
+                <p class="text-center">Nessuna tecnologia utilizzata</p>
+            </div>
         </div>
     </div>
 </template>

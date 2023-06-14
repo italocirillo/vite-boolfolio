@@ -39,7 +39,7 @@ export default {
 <template>
   <div class="container">
     <h1>PROJECT</h1>
-    <h2 class="p-3">Progetti trovati:{{ this.total }}</h2>
+    <h2 class="p-3">Progetti trovati:{{ total }}</h2>
     <div class="row row-cols-3 g-3">
       <div class="col" v-for="project in projects" :key="project.id">
         <ProjectCard :project="project" />
