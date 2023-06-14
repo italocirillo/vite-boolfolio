@@ -1,4 +1,5 @@
 <script>
+import { store } from '../store';
 export default {
     name: 'ProjectCard',
     props: {
@@ -6,7 +7,16 @@ export default {
     },
     data() {
         return {
-            baseUrl: "http://127.0.0.1:8000",
+            store,
+        }
+    },
+    computed: {
+        imageUrl() {
+            if (this.project.image.startsWith(`https://via.placeholder.com/`)) {
+                return this.project.image;
+            } else {
+                return `${this.store.baseUrl}/storage/${this.project.image}`;
+            }
         }
     }
 }
@@ -14,9 +24,7 @@ export default {
 
 <template>
     <div class="card h-100">
-        <img v-if="project.image"
-            :src="project.image.startsWith(`https://via.placeholder.com/`) ? `${project.image}` : `${baseUrl}/storage/${project.image}`"
-            class="card-img-top" :alt="project.title" />
+        <img v-if="project.image" :src="imageUrl" class="card-img-top" :alt="project.title" />
         <div v-else>
             Image not found
         </div>
