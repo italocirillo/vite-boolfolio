@@ -46,6 +46,10 @@ export default {
             <div v-else>
                 <p class="text-center">Nessuna tecnologia utilizzata</p>
             </div>
+            <div>
+                <router-link :to='{ name: "singleProject", params: { slug: project.slug } }' class="btn btn-primary">Mostra
+                    info progetto</router-link>
+            </div>
         </div>
     </div>
 </template>
