@@ -14,13 +14,21 @@ export default {
     },
     mounted() {
         const slug = this.$route.params.slug;
-        axios.get(`${this.store.baseUrl}/api/projects/${slug}`).then((resp) => {
-            if (resp.data.success) {
-                this.project = resp.data.results;
-            } else {
-                this.errorMesage = resp.data.error;
-            }
-        })
+        axios.get(`${this.store.baseUrl}/api/projects/${slug}`).then(
+            resp => {
+                if (resp.data.success) {
+                    this.project = resp.data.results;
+                } else {
+                    this.errorMesage = resp.data.error;
+                }
+            },
+            error => {
+                if (error.response.status === 404) {
+                    this.$router.push({ name: "notFound" });
+                } else {
+                    this.errorMessage = "ERRORE GENERICO";
+                }
+            })
     },
     computed: {
         imageUrl() {

@@ -43,3 +43,10 @@ export default {
         </nav>
     </header>
 </template>
+
+<style lang="scss" scoped>
+.router-link-active {
+    color: darkslategrey;
+    background-color: rgb(0, 96, 96);
+}
+</style>
