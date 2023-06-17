@@ -9,6 +9,8 @@ export default {
         return {
             store,
             projects: [],
+            types: [],
+            selectedType: "all",
             currentPage: 1,
             lastPage: null,
             total: 0,
@@ -17,15 +19,18 @@ export default {
     },
     mounted() {
         this.getProjects();
+        this.getTypes();
     },
     methods: {
         getProjects(page = 1) {
             this.loading = true;
-            axios.get(`${this.store.baseUrl}/api/projects`, {
-                params: {
-                    page: page,
-                }
-            }).then(resp => {
+            const params = {
+                page: page,
+            }
+            if (this.selectedType !== "all") {
+                params.type_id = this.selectedType;
+            }
+            axios.get(`${this.store.baseUrl}/api/projects`, { params }).then(resp => {
                 this.projects = resp.data.results.data;
                 this.currentPage = resp.data.results.current_page;
                 this.lastPage = resp.data.results.last_page;
@@ -33,7 +38,12 @@ export default {
             }).finally(() => {
                 this.loading = false;
             })
-        }
+        },
+        getTypes() {
+            axios.get(`${store.baseUrl}/api/types`).then((resp) => {
+                this.types = resp.data.results;
+            })
+        },
     },
     components: {
         ProjectCard,
@@ -46,6 +56,16 @@ export default {
     <section v-if="loading == false">
         <div class="container">
             <h1>PROJECT</h1>
+
+            <p>
+                <label class="form-label" for="type">Tipi</label>
+                <select v-model="selectedType" id="type" class="form-select w-25" @change="getProjects()">
+                    <option value="all">TUTTI</option>
+                    <option v-for="type_item in types" :key="type_item.id" :value="type_item.id">{{
+                        type_item.title }}</option>
+                </select>
+            </p>
+
             <h2 class="p-3">Progetti trovati:{{ total }}</h2>
             <div class="row row-cols-3 g-3">
                 <div class="col" v-for="project in projects" :key="project.id">
