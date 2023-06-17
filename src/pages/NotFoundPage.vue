@@ -3,7 +3,7 @@ export default {
     name: "NotFound",
     methods: {
         goBack() {
-            console.log(this.$route);
+            this.$router.go(-1);
         }
     }
 }
@@ -12,8 +12,8 @@ export default {
 <template>
     <div class="container">
         <h2 class="text-center my-5">404 NOT FOUND</h2>
-        <div>
-            <router-link :to="{ name: 'home' }" class="btn btn-success">Go home</router-link>
+        <div class="text-center">
+            <router-link :to="{ name: 'home' }" class="btn btn-success me-3">Go home</router-link>
             <a @click.prevent="goBack" class="btn btn-warning" href="">Go back</a>
         </div>
     </div>

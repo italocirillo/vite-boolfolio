@@ -24,7 +24,7 @@ export default {
             },
             error => {
                 if (error.response.status === 404) {
-                    this.$router.push({ name: "notFound" });
+                    this.$router.replace({ name: "notFound" });
                 } else {
                     this.errorMessage = "ERRORE GENERICO";
                 }
