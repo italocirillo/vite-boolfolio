@@ -12,6 +12,8 @@ export default {
             projects: [],
             types: [],
             selectedType: "all",
+            technologies: [],
+            selectedTechnology: "all",
             currentPage: 1,
             lastPage: null,
             total: 0,
@@ -21,6 +23,7 @@ export default {
     mounted() {
         this.getProjects();
         this.getTypes();
+        this.getTechnologies();
     },
     methods: {
         getProjects(page = 1) {
@@ -28,9 +31,14 @@ export default {
             const params = {
                 page: page,
             }
+
             if (this.selectedType !== "all") {
                 params.type_id = this.selectedType;
             }
+            if (this.selectedTechnology !== "all") {
+                params.technology_id = this.selectedTechnology;
+            }
+
             axios.get(`${this.store.baseUrl}/api/projects`, { params }).then(resp => {
                 this.projects = resp.data.results.data;
                 this.currentPage = resp.data.results.current_page;
@@ -43,6 +51,11 @@ export default {
         getTypes() {
             axios.get(`${store.baseUrl}/api/types`).then((resp) => {
                 this.types = resp.data.results;
+            })
+        },
+        getTechnologies() {
+            axios.get(`${store.baseUrl}/api/technologies`).then((resp) => {
+                this.technologies = resp.data.results;
             })
         },
     },
@@ -58,19 +71,31 @@ export default {
         <div class="container">
             <h1>PROJECT</h1>
 
-            <p>
-                <label class="form-label" for="type">Tipi</label>
-                <select v-model="selectedType" id="type" class="form-select w-25" @change="getProjects()">
-                    <option value="all">TUTTI</option>
-                    <option v-for="type_item in types" :key="type_item.id" :value="type_item.id">{{
-                        type_item.title }}</option>
-                </select>
-            </p>
+            <div class="row row-col-2">
+                <p class="col">
+                    <label class="form-label" for="type">Tipi</label>
+                    <select v-model="selectedType" id="type" class="form-select w-100" @change="getProjects()">
+                        <option value="all">TUTTI</option>
+                        <option v-for="type_item in types" :key="type_item.id" :value="type_item.id">{{
+                            type_item.title }}</option>
+                    </select>
+                </p>
+
+                <p class="col">
+                    <label class="form-label" for="technology">Tecnologie</label>
+                    <select v-model="selectedTechnology" id="technology" class="form-select w-100" @change="getProjects()">
+                        <option value="all">TUTTI</option>
+                        <option v-for="technology_item in technologies" :key="technology_item.id"
+                            :value="technology_item.id">{{
+                                technology_item.title }}</option>
+                    </select>
+                </p>
+            </div>
 
             <h2 class="p-3">Progetti trovati:{{ total }}</h2>
             <div class="row row-cols-3 g-3">
                 <div class="col" v-for="project in projects" :key="project.id">
-                    <ProjectCard :project="project" />
+                    <ProjectCard :project="project" :selectedTechnology="Number(selectedTechnology)" />
                 </div>
             </div>
             <Pagination :currentPage="currentPage" :lastPage="lastPage" @changePageNumber="getProjects" />

@@ -3,7 +3,8 @@ import { store } from '../store';
 export default {
     name: 'ProjectCard',
     props: {
-        project: Object
+        project: Object,
+        selectedTechnology: Number,
     },
     data() {
         return {
@@ -40,13 +41,15 @@ export default {
                     Tecnologie
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li v-for="tecnologia in project.technologies" class="list-group-item">{{ tecnologia.title }}</li>
+                    <li v-for="tecnologia in project.technologies" class="list-group-item"
+                        :class="{ 'active': selectedTechnology == tecnologia.id }">{{ tecnologia.title }}
+                    </li>
                 </ul>
             </div>
             <div v-else>
                 <p class="text-center">Nessuna tecnologia utilizzata</p>
             </div>
-            <div>
+            <div class="pt-3">
                 <router-link :to='{ name: "singleProject", params: { slug: project.slug } }' class="btn btn-primary">Mostra
                     info progetto</router-link>
             </div>
