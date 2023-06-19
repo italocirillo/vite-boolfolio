@@ -101,6 +101,7 @@ export default {
             <Pagination :currentPage="currentPage" :lastPage="lastPage" @changePageNumber="getProjects" />
         </div>
     </section>
+
     <section v-else>
         <p>CARICAMENTO IN CORSO</p>
     </section>
